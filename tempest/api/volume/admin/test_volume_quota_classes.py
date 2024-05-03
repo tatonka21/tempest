@@ -13,7 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 
 from oslo_log import log as logging
 from testtools import matchers
@@ -24,6 +23,7 @@ from tempest.common import tempest_fixtures as fixtures
 from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
+import secrets
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ class VolumeQuotaClassesTest(base.BaseVolumeAdminTest):
         volume_type_name = self.create_volume_type()['name']
         for key in ['volumes', 'snapshots', 'gigabytes']:
             update_kwargs['%s_%s' % (key, volume_type_name)] = \
-                random.randint(1, 10)
+                secrets.SystemRandom().randint(1, 10)
 
         LOG.debug("Update limits for the default quota class set")
         update_body = self.admin_quota_classes_client.update_quota_class_set(
