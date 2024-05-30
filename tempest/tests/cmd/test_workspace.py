@@ -22,6 +22,7 @@ from unittest.mock import patch
 from tempest.cmd import workspace
 from tempest.lib.common.utils import data_utils
 from tempest.tests import base
+from security import safe_command
 
 
 class TestTempestWorkspaceBase(base.TestCase):
@@ -40,7 +41,7 @@ class TestTempestWorkspaceBase(base.TestCase):
 
 class TestTempestWorkspace(TestTempestWorkspaceBase):
     def _run_cmd_gets_return_code(self, cmd, expected):
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+        process = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         return_code = process.returncode
