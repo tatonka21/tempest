@@ -27,9 +27,8 @@ from tempest.cmd import workspace
 from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.tests import base
-
-DEVNULL = open(os.devnull, 'wb')
-atexit.register(DEVNULL.close)
+with open(os.devnull, 'wb') as DEVNULL:
+    atexit.register(DEVNULL.close)
 
 CONF = config.CONF
 
