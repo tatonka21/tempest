@@ -31,6 +31,7 @@ from tempest.lib.common import fixed_network
 from tempest.lib.common import rest_client
 from tempest.lib.common.utils import data_utils
 from tempest.lib import exceptions as lib_exc
+import ssl
 
 CONF = config.CONF
 
@@ -407,7 +408,7 @@ def create_websocket(url):
         af, socktype, proto, _, sa = res
         client_socket = socket.socket(af, socktype, proto)
         if url.scheme == 'https':
-            client_socket = sslc().wrap_socket(client_socket,
+            client_socket = sslc(protocol=ssl.PROTOCOL_TLS_CLIENT).wrap_socket(client_socket,
                                                server_hostname=url.hostname)
         client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
