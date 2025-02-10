@@ -13,7 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 import testtools
 
 from tempest.api.object_storage import base
@@ -22,6 +21,7 @@ from tempest.common import object_storage
 from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
+import secrets
 
 CONF = config.CONF
 
@@ -217,8 +217,8 @@ class AccountTest(base.BaseObjectTest):
 
         Result are always limited by the limit whatever the marker.
         """
-        for marker in random.choice(self.containers):
-            limit = random.randint(0, self.containers_count - 1)
+        for marker in secrets.choice(self.containers):
+            limit = secrets.SystemRandom().randint(0, self.containers_count - 1)
             params = {'marker': marker,
                       'limit': limit}
             resp, container_list = \
@@ -235,7 +235,7 @@ class AccountTest(base.BaseObjectTest):
         Result are always limited by the limit whatever the end_marker.
         """
         # list containers combining limit and end_marker param
-        limit = random.randint(1, self.containers_count)
+        limit = secrets.SystemRandom().randint(1, self.containers_count)
         params = {'limit': limit,
                   'end_marker': self.containers[self.containers_count // 2]}
         resp, container_list = self.account_client.list_account_containers(
@@ -251,7 +251,7 @@ class AccountTest(base.BaseObjectTest):
         Result are always limited by the limit whatever the marker and the
         end_marker.
         """
-        limit = random.randint(1, self.containers_count)
+        limit = secrets.SystemRandom().randint(1, self.containers_count)
         params = {'limit': limit,
                   'marker': self.containers[0],
                   'end_marker': self.containers[self.containers_count - 1]}

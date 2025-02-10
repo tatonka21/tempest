@@ -13,7 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 import re
 import time
 import zlib
@@ -24,6 +23,7 @@ from tempest.common import custom_matchers
 from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
+import secrets
 
 CONF = config.CONF
 
@@ -603,7 +603,7 @@ class ObjectTest(base.BaseObjectTest):
                                          object_name,
                                          data,
                                          metadata=None)
-        rand_num = random.randint(3, len(data) - 1)
+        rand_num = secrets.SystemRandom().randint(3, len(data) - 1)
         metadata = {'Range': 'bytes=%s-%s' % (rand_num - 3, rand_num - 1)}
         resp, body = self.object_client.get_object(
             self.container_name,

@@ -15,7 +15,6 @@
 #    under the License.
 
 import operator
-import random
 from urllib.parse import urlparse
 
 from testtools import matchers
@@ -23,6 +22,7 @@ from testtools import matchers
 from tempest.api.volume import base
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
+import secrets
 
 
 class VolumesListTestJSON(base.BaseVolumeTest):
@@ -410,7 +410,7 @@ class VolumesListTestJSON(base.BaseVolumeTest):
         """
         # Choosing a random volume from a list of volumes for 'marker'
         # parameter
-        marker = random.choice(self.volume_id_list)
+        marker = secrets.choice(self.volume_id_list)
 
         # Though Cinder volumes are returned sorted by ID by default
         # this is implicit. Let make this explicit in case Cinder
