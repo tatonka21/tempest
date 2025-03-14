@@ -22,6 +22,7 @@ from oslo_log import log as logging
 from tempest.lib import base
 import tempest.lib.cli.output_parser
 from tempest.lib import exceptions
+from security import safe_command
 
 
 LOG = logging.getLogger(__name__)
@@ -57,7 +58,7 @@ def execute(cmd, action, flags='', params='', fail_ok=False,
     cmd = shlex.split(cmd)
     stdout = subprocess.PIPE
     stderr = subprocess.STDOUT if merge_stderr else subprocess.PIPE
-    proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
+    proc = safe_command.run(subprocess.Popen, cmd, stdout=stdout, stderr=stderr)
     result, result_err = proc.communicate()
     if not fail_ok and proc.returncode != 0:
         raise exceptions.CommandFailed(proc.returncode,
