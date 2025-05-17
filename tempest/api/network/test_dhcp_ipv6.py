@@ -13,7 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 
 import netaddr
 from oslo_utils import netutils
@@ -24,6 +23,7 @@ from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
+import secrets
 
 CONF = config.CONF
 
@@ -330,7 +330,7 @@ class NetworksTestDHCPv6(base.BaseNetworkTest):
             self.subnets.append(subnet)
             ip_range = netaddr.IPRange(subnet["allocation_pools"][0]["start"],
                                        subnet["allocation_pools"][0]["end"])
-            ip = netaddr.IPAddress(random.randrange(ip_range.first,
+            ip = netaddr.IPAddress(secrets.SystemRandom().randrange(ip_range.first,
                                                     ip_range.last)).format()
             port = self.create_port(self.network,
                                     fixed_ips=[{'subnet_id': subnet['id'],
@@ -356,8 +356,7 @@ class NetworksTestDHCPv6(base.BaseNetworkTest):
         self.subnets.append(subnet)
         ip_range = netaddr.IPRange(subnet["allocation_pools"][0]["start"],
                                    subnet["allocation_pools"][0]["end"])
-        ip = netaddr.IPAddress(random.randrange(
-            ip_range.last + 1, ip_range.last + 10)).format()
+        ip = netaddr.IPAddress(secrets.SystemRandom().randrange(ip_range.last + 1, ip_range.last + 10)).format()
         self.assertRaises(lib_exc.BadRequest,
                           self.create_port,
                           self.network,
@@ -377,8 +376,7 @@ class NetworksTestDHCPv6(base.BaseNetworkTest):
         self.subnets.append(subnet)
         ip_range = netaddr.IPRange(subnet["allocation_pools"][0]["start"],
                                    subnet["allocation_pools"][0]["end"])
-        ip = netaddr.IPAddress(random.randrange(
-            ip_range.first, ip_range.last)).format()
+        ip = netaddr.IPAddress(secrets.SystemRandom().randrange(ip_range.first, ip_range.last)).format()
         port = self.create_port(self.network,
                                 fixed_ips=[
                                     {'subnet_id': subnet['id'],
