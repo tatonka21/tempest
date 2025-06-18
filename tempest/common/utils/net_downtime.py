@@ -18,6 +18,7 @@ import subprocess
 import fixtures
 
 from oslo_log import log
+from security import safe_command
 
 
 LOG = log.getLogger(__name__)
@@ -39,8 +40,7 @@ class NetDowntimeMeter(fixtures.Fixture):
         cmd.append(self.dest_ip)
         LOG.debug("Starting background pinger to '{}' with interval {}".format(
             self.dest_ip, self.interval))
-        self.ping_process = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.ping_process = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.addCleanup(self.cleanup)
 
     def cleanup(self):
